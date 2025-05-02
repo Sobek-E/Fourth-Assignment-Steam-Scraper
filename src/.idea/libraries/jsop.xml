@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jsop">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../../../Program Files/jsop" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../../Program Files/jsop" recursive="false" />
+  </library>
+</component>

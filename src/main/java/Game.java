@@ -15,6 +15,7 @@ public class Game {
         return name;
     }
 
+
     public double getRating() {
         return rating;
     }
@@ -25,7 +26,7 @@ public class Game {
 
     @Override
     public String toString() {
-        return "Game{name='" + name + "', rating=" + rating + ", price=" + price + "}";
+        return "\nGame : " + name + "\n rating: " + rating + "\n price: " + price;
     }
 
     @Override
@@ -33,13 +34,7 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return Double.compare(game.rating, rating) == 0 &&
-                price == game.price &&
-                Objects.equals(name, game.name);
+        return Double.compare(game.rating, rating) == 0 && Double.compare(game.price, price) == 0 && Objects.equals(name, game.name);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, rating, price);
-    }
 }

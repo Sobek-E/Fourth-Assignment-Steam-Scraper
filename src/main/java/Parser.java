@@ -9,61 +9,53 @@ import java.util.*;
 public class Parser {
     static List<Game> games = new ArrayList<>();
 
-    public List<Game> sortByName() {
+    public List<Game> sortByName(){
         List<Game> sortedByName = new ArrayList<>(games);
         sortedByName.sort(Comparator.comparing(Game::getName));
-        return sortedByName;
+        return  sortedByName;
     }
 
-    public List<Game> sortByRating() {
+    public List<Game> sortByRating(){
         List<Game> sortedByRating = new ArrayList<>(games);
-        sortedByRating.sort(Comparator.comparingDouble(Game::getRating).reversed());
+        sortedByRating.sort(Comparator.comparing(Game::getRating).reversed());
         return sortedByRating;
     }
 
-    public List<Game> sortByPrice() {
+    public List<Game> sortByPrice(){
         List<Game> sortedByPrice = new ArrayList<>(games);
-        sortedByPrice.sort(Comparator.comparingInt(Game::getPrice).reversed());
+        sortedByPrice.sort(Comparator.comparing(Game::getPrice).reversed());
         return sortedByPrice;
     }
 
     public void setUp() throws IOException {
-        File input = new File("src/Resources/games.html");
+
+        File input = new File("src/Resources/Video_Games.html");
         Document doc = Jsoup.parse(input, "UTF-8");
 
-        Elements gameElements = doc.select("div.game");
+        Elements gameElements = doc.select(".game");
 
-        for (Element gameElement : gameElements) {
-            String name = gameElement.select("span.game-name").text();
-            String ratingText = gameElement.select("span.game-rating").text();
-            String priceText = gameElement.select("span.game-price").text();
+        List<Element> limitedGameElements = gameElements.subList(0, 100);
 
-            try {
-                double rating = Double.parseDouble(ratingText);
-                int price = Integer.parseInt(priceText);
-                games.add(new Game(name, rating, price));
-            } catch (NumberFormatException e) {
-                System.out.println("Skipping invalid entry: " + name);
-            }
+
+        for (Element gameElement : limitedGameElements) {
+
+            String name = gameElement.select(".game-name").text();
+
+            String ratingText = gameElement.select(".game-rating").text(); // e.g. 4.8/5
+            double rating = Double.parseDouble(ratingText.split("/")[0]);
+
+            String priceText = gameElement.select(".game-price").text(); // e.g. 91 €
+            int price = Integer.parseInt(priceText.replace(" €", "").trim());
+
+            games.add(new Game(name, rating, price));
         }
     }
 
     public static void main(String[] args) {
-        Parser parser = new Parser();
-        try {
-            parser.setUp();
-
-            System.out.println("Sorted by Name:");
-            parser.sortByName().forEach(System.out::println);
-
-            System.out.println("\nSorted by Rating:");
-            parser.sortByRating().forEach(System.out::println);
-
-            System.out.println("\nSorted by Price:");
-            parser.sortByPrice().forEach(System.out::println);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        int i = 0;
+        for(Game game : games){
+            System.out.print(++i + "-");
+            System.out.println(game);
         }
     }
 }
